@@ -1,23 +1,24 @@
 variable "create_vpc_endpoints" {
-  type        = "string"
+  type        = string
   description = "toggle to create vpc endpoints"
-  default     = false
+  default     = true
 }
 
 variable "subnet_ids" {
-  type        = "list"
+  type        = list(string)
   description = "target subnet ids"
   default     = []
 }
 
 variable "vpc_endpoint_interfaces" {
-  type        = "list"
+  type        = list(string)
   description = "List of aws api endpoints that are used to create VPC Interface endpoints. See https://docs.aws.amazon.com/general/latest/gr/rande.html for full list."
   default     = []
 }
 
 variable "tags" {
   description = "A map of tags to add to the VPC endpoint SG"
-  type        = "map"
+  type        = map(string)
   default     = {}
 }
+

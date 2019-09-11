@@ -5,3 +5,23 @@ update_configs:
   - package_manager: "terraform"
     directory: "/"
     update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/tests/no_endpoints"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/tests/config_endpoint"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/tests/multiple_endpoints"
+    update_schedule: "daily"
+
+  - package_manager: "terraform"
+    directory: "/tests/no_create"
+    update_schedule: "daily"
+
+  - package_manager: "go:modules"
+    directory: "/tests"
+    update_schedule: "daily"
