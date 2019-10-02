@@ -1,6 +1,6 @@
 variable "create_vpc_endpoints" {
-  type        = string
   description = "toggle to create vpc endpoints"
+  type        = bool
   default     = true
 }
 
