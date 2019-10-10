@@ -10,9 +10,9 @@ variable "subnet_ids" {
   default     = []
 }
 
-variable "vpc_endpoint_interfaces" {
+variable "vpc_endpoint_services" {
   type        = list(string)
-  description = "List of aws api endpoints that are used to create VPC Interface endpoints. See https://docs.aws.amazon.com/general/latest/gr/rande.html for full list."
+  description = "List of aws endpoint service names that are used to create VPC Interface endpoints. See https://docs.aws.amazon.com/general/latest/gr/rande.html for full list."
   default     = []
 }
 

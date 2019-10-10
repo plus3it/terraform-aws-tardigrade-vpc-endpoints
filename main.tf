@@ -4,6 +4,12 @@ data "aws_subnet" "selected" {
   id = var.subnet_ids[0]
 }
 
+data "aws_vpc_endpoint_service" "this" {
+  count = var.create_vpc_endpoints ? length(var.vpc_endpoint_services) : 0
+
+  service = var.vpc_endpoint_services[count.index]
+}
+
 data "aws_vpc" "selected" {
   count = var.create_vpc_endpoints ? 1 : 0
 
@@ -39,10 +45,10 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_vpc_endpoint" "interface_services" {
-  count = var.create_vpc_endpoints ? length(var.vpc_endpoint_interfaces) : 0
+  count = var.create_vpc_endpoints ? length(var.vpc_endpoint_services) : 0
 
   vpc_id            = local.vpc_id
-  service_name      = var.vpc_endpoint_interfaces[count.index]
+  service_name      = data.aws_vpc_endpoint_service.this[count.index].service_name
   vpc_endpoint_type = "Interface"
   auto_accept       = true
 
