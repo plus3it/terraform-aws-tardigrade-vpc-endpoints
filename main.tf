@@ -34,7 +34,7 @@ locals {
 }
 
 resource "aws_security_group" "this" {
-  count = var.create_vpc_endpoints && var.create_sg_per_endpoint ? length(var.vpc_endpoint_services) : 1
+  count = var.create_vpc_endpoints ? (var.create_sg_per_endpoint ? length(var.vpc_endpoint_services) : 1) : 0
 
   description = var.create_sg_per_endpoint ? "VPC Interface ${var.vpc_endpoint_services[count.index]} Endpoint" : "VPC Interface Endpoints - Allow inbound from ${local.vpc_id} and allow all outbound"
   vpc_id      = local.vpc_id
