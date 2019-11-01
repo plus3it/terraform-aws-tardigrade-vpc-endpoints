@@ -30,11 +30,11 @@ module "config_endpoint" {
   }
 
   create_vpc_endpoints = true
-  vpc_endpoint_interfaces = [
-    "com.amazonaws.us-east-1.config",
-    "com.amazonaws.us-east-1.codepipeline",
-    "com.amazonaws.us-east-1.monitoring",
-    "com.amazonaws.us-east-1.ec2",
+  vpc_endpoint_services = [
+    "config",
+    "codepipeline",
+    "monitoring",
+    "ec2",
   ]
   subnet_ids = module.vpc.private_subnets
 }
