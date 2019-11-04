@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+### 2.0.0
+
+**Released**: 2019.11.1
+
+**Commit Delta**: [Change from 1.0.2 release](https://github.com/plus3it/terraform-aws-tardigrade-vpc-endpoints/compare/1.0.2...2.0.0)
+
+**Summary**:
+
+*   Uses service names instead of interface names to identify vpc endpoints (backwards incompatible)
+*   Adds support for creating a security group per vpc endpoint
+
 ### 1.0.2
 
 **Released**: 2019.10.28

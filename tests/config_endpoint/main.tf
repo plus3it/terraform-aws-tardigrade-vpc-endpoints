@@ -29,7 +29,7 @@ module "config_endpoint" {
     aws = aws
   }
 
-  create_vpc_endpoints    = true
-  vpc_endpoint_interfaces = ["com.amazonaws.us-east-1.config"]
-  subnet_ids              = module.vpc.private_subnets
+  create_vpc_endpoints  = true
+  vpc_endpoint_services = ["config"]
+  subnet_ids            = module.vpc.private_subnets
 }
