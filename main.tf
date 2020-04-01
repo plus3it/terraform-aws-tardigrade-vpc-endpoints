@@ -4,10 +4,18 @@ data "aws_subnet" "selected" {
   id = var.subnet_ids[0]
 }
 
-data "aws_vpc_endpoint_service" "this" {
-  count = var.create_vpc_endpoints ? length(var.vpc_endpoint_services) : 0
+data "aws_region" "selected" {}
 
-  service = var.vpc_endpoint_services[count.index]
+data "aws_vpc_endpoint_service" "this" {
+  for_each = toset(var.create_vpc_endpoints ? var.vpc_endpoint_services : [])
+
+  // If we get a "common name" (like "kms") we must generate a fully qualified name.
+  // If the name contains the current region we trust the user to have provided a valid fully qualified name.
+  // This handles all _current_ services.
+  // * Simple ones like "s3" or "sns".
+  // * Complex common names like "ecr.dkr" and "ecr.api".
+  // * Non-standard services like sagemeaker where the fully qualified name is like "aws.sagemaker.us-east-1.notebook".
+  service_name = length(regexall(data.aws_region.selected.name, each.key)) == 1 ? each.key : "com.amazonaws.${data.aws_region.selected.name}.${each.key}"
 }
 
 data "aws_vpc" "selected" {
@@ -34,9 +42,9 @@ locals {
 }
 
 resource "aws_security_group" "this" {
-  count = var.create_vpc_endpoints ? (var.create_sg_per_endpoint ? length(var.vpc_endpoint_services) : 1) : 0
+  for_each = toset(var.create_vpc_endpoints ? var.create_sg_per_endpoint ? var.vpc_endpoint_services : ["shared"] : [])
 
-  description = var.create_sg_per_endpoint ? "VPC Interface ${var.vpc_endpoint_services[count.index]} Endpoint" : "VPC Interface Endpoints - Allow inbound from ${local.vpc_id} and allow all outbound"
+  description = var.create_sg_per_endpoint ? "VPC Interface ${var.vpc_endpoint_services[index(var.vpc_endpoint_services, each.key)]} Endpoint" : "VPC Interface Endpoints - Allow inbound from ${local.vpc_id} and allow all outbound"
   vpc_id      = local.vpc_id
 
   dynamic "egress" {
@@ -71,16 +79,16 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_vpc_endpoint" "interface_services" {
-  count = var.create_vpc_endpoints ? length(var.vpc_endpoint_services) : 0
+  for_each = toset(var.create_vpc_endpoints ? var.vpc_endpoint_services : [])
 
   vpc_id            = local.vpc_id
-  service_name      = data.aws_vpc_endpoint_service.this[count.index].service_name
-  vpc_endpoint_type = "Interface"
+  service_name      = data.aws_vpc_endpoint_service.this[each.key].service_name
+  vpc_endpoint_type = data.aws_vpc_endpoint_service.this[each.key].service_type
   auto_accept       = true
 
   subnet_ids = var.subnet_ids
 
-  security_group_ids = var.create_sg_per_endpoint ? [aws_security_group.this[count.index].id] : [aws_security_group.this[0].id]
+  security_group_ids = var.create_sg_per_endpoint ? [aws_security_group.this[each.key].id] : [aws_security_group.this["shared"].id]
 
   private_dns_enabled = true # https://docs.aws.amazon.com/vpc/latest/userguide/vpce-interface.html#vpce-private-dns
 }
