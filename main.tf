@@ -39,12 +39,19 @@ locals {
   })
   vpc_id   = join("", data.aws_subnet.selected.*.vpc_id)
   vpc_cidr = join("", data.aws_vpc.selected.*.cidr_block)
+
+  # Split Endpoints by their type
+  gateway_endpoints = toset([for e in data.aws_vpc_endpoint_service.this : e.service_name if e.service_type == "Gateway"])
+  interface_endpoints = toset([for e in data.aws_vpc_endpoint_service.this : e.service_name if e.service_type == "Interface"])
+
+  # Only Interface Endpoints support SGs
+  security_groups = toset(var.create_vpc_endpoints ? var.create_sg_per_endpoint ? local.interface_endpoints : ["shared"] : [])
 }
 
 resource "aws_security_group" "this" {
-  for_each = toset(var.create_vpc_endpoints ? var.create_sg_per_endpoint ? var.vpc_endpoint_services : ["shared"] : [])
+  for_each = local.security_groups
 
-  description = var.create_sg_per_endpoint ? "VPC Interface ${var.vpc_endpoint_services[index(var.vpc_endpoint_services, each.key)]} Endpoint" : "VPC Interface Endpoints - Allow inbound from ${local.vpc_id} and allow all outbound"
+  description = var.create_sg_per_endpoint ? "VPC Interface ${each.key} Endpoint" : "VPC Interface Endpoints - Allow inbound from ${local.vpc_id} and allow all outbound"
   vpc_id      = local.vpc_id
 
   dynamic "egress" {
@@ -79,11 +86,11 @@ resource "aws_security_group" "this" {
 }
 
 resource "aws_vpc_endpoint" "interface_services" {
-  for_each = toset(var.create_vpc_endpoints ? var.vpc_endpoint_services : [])
+  for_each = local.interface_endpoints
 
   vpc_id            = local.vpc_id
-  service_name      = data.aws_vpc_endpoint_service.this[each.key].service_name
-  vpc_endpoint_type = data.aws_vpc_endpoint_service.this[each.key].service_type
+  service_name      = each.key
+  vpc_endpoint_type = "Interface"
   auto_accept       = true
 
   subnet_ids = var.subnet_ids
@@ -91,5 +98,17 @@ resource "aws_vpc_endpoint" "interface_services" {
   security_group_ids = var.create_sg_per_endpoint ? [aws_security_group.this[each.key].id] : [aws_security_group.this["shared"].id]
 
   private_dns_enabled = true # https://docs.aws.amazon.com/vpc/latest/userguide/vpce-interface.html#vpce-private-dns
+
+  tags = var.tags
 }
 
+resource "aws_vpc_endpoint" "gateway_services" {
+  for_each = local.gateway_endpoints
+
+  vpc_id            = local.vpc_id
+  service_name      = each.key
+  vpc_endpoint_type = "Gateway"
+  auto_accept       = true
+
+  tags = var.tags
+}
