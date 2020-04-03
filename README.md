@@ -7,6 +7,16 @@ Terraform `>= 0.12.9` is required due to a bug fix related to empty sets with `f
 version `0.12.9` -- see the [Changelog here](https://github.com/hashicorp/terraform/blob/v0.12/CHANGELOG.md#0129-september-17-2019).
 The original [bug was reported as issue #22281](https://github.com/hashicorp/terraform/issues/22281).
 
+## Updating documentation
+Portions of this module's README.md, and those in its `tests` directory, are generated automatically. To update the sections inside `BEGIN TFDOCS` and `END TFDOCS` run the following:
+
+```sh
+docker build -t terraform-aws-tardigrade-vpc-endpoints:latest .
+docker run --rm -ti -v "$(pwd):/ci-harness/my-project" terraform-aws-tardigrade-vpc-endpoints:latest docs/generate
+```
+
+Then commit the updated files.
+
 <!-- BEGIN TFDOCS -->
 ## Providers
 
@@ -30,8 +40,8 @@ The original [bug was reported as issue #22281](https://github.com/hashicorp/ter
 
 | Name | Description |
 |------|-------------|
-| vpc\_endpoint\_interface\_services | n/a |
 | vpc\_endpoint\_gateway\_services | n/a |
+| vpc\_endpoint\_interface\_services | n/a |
 | vpc\_endpoint\_sgs | n/a |
 
 <!-- END TFDOCS -->
