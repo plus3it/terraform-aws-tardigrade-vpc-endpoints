@@ -29,8 +29,8 @@ module "sg_per_endpoint" {
     aws = aws
   }
 
-  create_vpc_endpoints  = true
-  vpc_endpoint_services = ["s3", "sns"]
-  subnet_ids            = module.vpc.private_subnets
+  create_vpc_endpoints   = true
+  vpc_endpoint_services  = ["s3", "sns"]
+  subnet_ids             = module.vpc.private_subnets
   create_sg_per_endpoint = true
 }

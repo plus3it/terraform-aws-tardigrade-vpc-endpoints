@@ -41,7 +41,7 @@ locals {
   vpc_cidr = join("", data.aws_vpc.selected.*.cidr_block)
 
   # Split Endpoints by their type
-  gateway_endpoints = toset([for e in data.aws_vpc_endpoint_service.this : e.service_name if e.service_type == "Gateway"])
+  gateway_endpoints   = toset([for e in data.aws_vpc_endpoint_service.this : e.service_name if e.service_type == "Gateway"])
   interface_endpoints = toset([for e in data.aws_vpc_endpoint_service.this : e.service_name if e.service_type == "Interface"])
 
   # Only Interface Endpoints support SGs
