@@ -1,41 +1,41 @@
 variable "create_sg_per_endpoint" {
-  description = "toggle to create a sg for each vpc endpoint. Defaults to using just one for all endpoints."
+  description = "Toggle to create a SecurityGroup for each VPC Endpoint. Defaults to using just one for all Interface Endpoints. Note that Gateway Endpoints don't support SecurityGroups."
   type        = bool
   default     = false
 }
 
 variable "create_vpc_endpoints" {
-  description = "toggle to create vpc endpoints"
+  description = "Toggle to create VPC Endpoints."
   type        = bool
   default     = true
 }
 
 variable "sg_egress_rules" {
-  description = "Egress rules for the vpc endpoint sg(s). Set to empty list to disable default rules."
+  description = "Egress rules for the VPC Endpoint SecurityGroup(s). Set to empty list to disable default rules."
   type        = list
   default     = null
 }
 
 variable "sg_ingress_rules" {
-  description = "Ingress rules for the vpc endpoint sg(s). Set to empty list to disable default rules."
+  description = "Ingress rules for the VPC Endpoint SecurityGroup(s). Set to empty list to disable default rules."
   type        = list
   default     = null
 }
 
 variable "subnet_ids" {
   type        = list(string)
-  description = "target subnet ids"
+  description = "Target Subnet ids."
   default     = []
 }
 
 variable "vpc_endpoint_services" {
   type        = list(string)
-  description = "List of aws endpoint service names that are used to create VPC Interface endpoints. See https://docs.aws.amazon.com/general/latest/gr/rande.html for full list."
+  description = "List of AWS Endpoint service names that are used to create VPC Interface Endpoints. Both Gateway and Interface Endpoints are supported. See https://docs.aws.amazon.com/general/latest/gr/rande.html for full list."
   default     = []
 }
 
 variable "tags" {
-  description = "A map of tags to add to the VPC endpoint SG"
+  description = "A map of tags to add to the VPC Endpoint and to the SecurityGroup(s)."
   type        = map(string)
   default     = {}
 }
