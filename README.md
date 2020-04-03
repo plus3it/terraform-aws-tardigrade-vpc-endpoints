@@ -11,8 +11,17 @@ The original [bug was reported as issue #22281](https://github.com/hashicorp/ter
 Portions of this module's README.md, and those in its `tests` directory, are generated automatically. To update the sections inside `BEGIN TFDOCS` and `END TFDOCS` run the following:
 
 ```sh
-docker build -t terraform-aws-tardigrade-vpc-endpoints:latest .
-docker run --rm -ti -v "$(pwd):/ci-harness/my-project" terraform-aws-tardigrade-vpc-endpoints:latest docs/generate
+## This will run terraform-docs in the docker container, which of
+## course requires that you have docker...
+# The 'init' target is a one time task... it simply clones a "ci" repository to access shared make targets
+make init
+make docker/run target=docs/generate
+
+## Or
+## This will install terraform-docs to your local system, may not
+## be desirable for you. And may not work if the make target does
+## not account for your OS
+make docs/generate
 ```
 
 Then commit the updated files.
