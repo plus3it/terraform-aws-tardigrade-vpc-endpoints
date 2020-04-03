@@ -2,6 +2,10 @@
 
 Terraform module to create VPC Endpoints
 
+## Terraform version requirements
+Terraform `>= 0.12.9` is required due to a bug fix related to empty sets with `for_each`. The fix was included in
+version `0.12.9` -- see the [Changelog here](https://github.com/hashicorp/terraform/blob/v0.12/CHANGELOG.md#0129-september-17-2019).
+The original [bug was reported as issue #22281](https://github.com/hashicorp/terraform/issues/22281).
 
 <!-- BEGIN TFDOCS -->
 ## Providers
