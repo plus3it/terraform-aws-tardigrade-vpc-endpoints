@@ -26,16 +26,24 @@ data "aws_vpc" "selected" {
 
 locals {
   sg_egress_rules_default = list({
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    description      = null
+    prefix_list_ids  = null
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = null
+    security_groups  = null
   })
   sg_ingress_rules_default = list({
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = [local.vpc_cidr]
+    description      = null
+    prefix_list_ids  = null
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = [local.vpc_cidr]
+    ipv6_cidr_blocks = null
+    security_groups  = null
   })
   vpc_id   = join("", data.aws_subnet.selected.*.vpc_id)
   vpc_cidr = join("", data.aws_vpc.selected.*.cidr_block)
@@ -59,9 +67,9 @@ resource "aws_security_group" "this" {
     content {
       description      = lookup(egress.value, "description", null)
       prefix_list_ids  = lookup(egress.value, "prefix_list_ids", null)
-      from_port        = lookup(egress.value, "from_port", null)
-      to_port          = lookup(egress.value, "to_port", null)
-      protocol         = lookup(egress.value, "protocol", null)
+      from_port        = lookup(egress.value, "from_port")
+      to_port          = lookup(egress.value, "to_port")
+      protocol         = lookup(egress.value, "protocol")
       cidr_blocks      = lookup(egress.value, "cidr_blocks", null)
       ipv6_cidr_blocks = lookup(egress.value, "ipv6_cidr_blocks", null)
       security_groups  = lookup(egress.value, "security_groups", null)
@@ -73,9 +81,9 @@ resource "aws_security_group" "this" {
     content {
       description      = lookup(ingress.value, "description", null)
       prefix_list_ids  = lookup(ingress.value, "prefix_list_ids", null)
-      from_port        = lookup(ingress.value, "from_port", null)
-      to_port          = lookup(ingress.value, "to_port", null)
-      protocol         = lookup(ingress.value, "protocol", null)
+      from_port        = lookup(ingress.value, "from_port")
+      to_port          = lookup(ingress.value, "to_port")
+      protocol         = lookup(ingress.value, "protocol")
       cidr_blocks      = lookup(ingress.value, "cidr_blocks", null)
       ipv6_cidr_blocks = lookup(ingress.value, "ipv6_cidr_blocks", null)
       security_groups  = lookup(ingress.value, "security_groups", null)

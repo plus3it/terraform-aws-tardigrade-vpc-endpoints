@@ -26,6 +26,8 @@ module "vpc" {
 locals {
   sg_ingress_rules = [
     {
+      description     = null
+      prefix_list_ids = null
       from_port       = 0
       to_port         = 0
       protocol        = "-1"
@@ -33,6 +35,8 @@ locals {
         module.vpc.vpc_cidr_block,
         "10.11.22.0/24"
       ]
+      ipv6_cidr_blocks = null
+      security_groups  = null
     }
   ]
 }
