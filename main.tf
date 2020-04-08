@@ -65,28 +65,28 @@ resource "aws_security_group" "this" {
   dynamic "egress" {
     for_each = var.sg_egress_rules != null ? var.sg_egress_rules : local.sg_egress_rules_default
     content {
-      description      = lookup(egress.value, "description", null)
-      prefix_list_ids  = lookup(egress.value, "prefix_list_ids", null)
-      from_port        = lookup(egress.value, "from_port")
-      to_port          = lookup(egress.value, "to_port")
-      protocol         = lookup(egress.value, "protocol")
-      cidr_blocks      = lookup(egress.value, "cidr_blocks", null)
-      ipv6_cidr_blocks = lookup(egress.value, "ipv6_cidr_blocks", null)
-      security_groups  = lookup(egress.value, "security_groups", null)
+      description      = egress.value["description"]
+      prefix_list_ids  = egress.value["prefix_list_ids"]
+      from_port        = egress.value["from_port"]
+      to_port          = egress.value["to_port"]
+      protocol         = egress.value["protocol"]
+      cidr_blocks      = egress.value["cidr_blocks"]
+      ipv6_cidr_blocks = egress.value["ipv6_cidr_blocks"]
+      security_groups  = egress.value["security_groups"]
     }
   }
 
   dynamic "ingress" {
     for_each = var.sg_ingress_rules != null ? var.sg_ingress_rules : local.sg_ingress_rules_default
     content {
-      description      = lookup(ingress.value, "description", null)
-      prefix_list_ids  = lookup(ingress.value, "prefix_list_ids", null)
-      from_port        = lookup(ingress.value, "from_port")
-      to_port          = lookup(ingress.value, "to_port")
-      protocol         = lookup(ingress.value, "protocol")
-      cidr_blocks      = lookup(ingress.value, "cidr_blocks", null)
-      ipv6_cidr_blocks = lookup(ingress.value, "ipv6_cidr_blocks", null)
-      security_groups  = lookup(ingress.value, "security_groups", null)
+      description      = ingress.value["description"]
+      prefix_list_ids  = ingress.value["prefix_list_ids"]
+      from_port        = ingress.value["from_port"]
+      to_port          = ingress.value["to_port"]
+      protocol         = ingress.value["protocol"]
+      cidr_blocks      = ingress.value["cidr_blocks"]
+      ipv6_cidr_blocks = ingress.value["ipv6_cidr_blocks"]
+      security_groups  = ingress.value["security_groups"]
     }
   }
 
