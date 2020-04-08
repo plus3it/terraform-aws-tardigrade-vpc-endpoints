@@ -22,7 +22,16 @@ variable "sg_egress_rules" {
     ipv6_cidr_blocks = list(string)
     security_groups  = list(string)
   }))
-  default = null
+  default = [{
+    description      = null
+    prefix_list_ids  = null
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = null
+    security_groups  = null
+  }]
 }
 
 variable "sg_ingress_rules" {
@@ -37,7 +46,16 @@ variable "sg_ingress_rules" {
     ipv6_cidr_blocks = list(string)
     security_groups  = list(string)
   }))
-  default = null
+  default = [{
+    description      = null
+    prefix_list_ids  = null
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = null
+    security_groups  = null
+  }]
 }
 
 variable "subnet_ids" {
