@@ -18,15 +18,8 @@ data "aws_vpc_endpoint_service" "this" {
   service_name = length(regexall(data.aws_region.selected.name, each.key)) == 1 ? each.key : "com.amazonaws.${data.aws_region.selected.name}.${each.key}"
 }
 
-data "aws_vpc" "selected" {
-  count = var.create_vpc_endpoints ? 1 : 0
-
-  id = local.vpc_id
-}
-
 locals {
-  vpc_id   = join("", data.aws_subnet.selected.*.vpc_id)
-  vpc_cidr = join("", data.aws_vpc.selected.*.cidr_block)
+  vpc_id = join("", data.aws_subnet.selected.*.vpc_id)
 
   # Split Endpoints by their type
   gateway_endpoints   = toset([for e in data.aws_vpc_endpoint_service.this : e.service_name if e.service_type == "Gateway"])
@@ -39,7 +32,7 @@ locals {
 resource "aws_security_group" "this" {
   for_each = local.security_groups
 
-  description = var.create_sg_per_endpoint ? "VPC Interface ${each.key} Endpoint" : "VPC Interface Endpoints - Allow inbound from ${local.vpc_id} and allow all outbound"
+  description = var.create_sg_per_endpoint ? "VPC Interface ${each.key} Endpoint" : "VPC Interface Endpoints"
   vpc_id      = local.vpc_id
 
   dynamic "egress" {
