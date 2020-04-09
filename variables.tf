@@ -12,14 +12,50 @@ variable "create_vpc_endpoints" {
 
 variable "sg_egress_rules" {
   description = "Egress rules for the VPC Endpoint SecurityGroup(s). Set to empty list to disable default rules."
-  type        = list
-  default     = null
+  type = list(object({
+    description      = string
+    prefix_list_ids  = list(string)
+    from_port        = number
+    to_port          = number
+    protocol         = string
+    cidr_blocks      = list(string)
+    ipv6_cidr_blocks = list(string)
+    security_groups  = list(string)
+  }))
+  default = [{
+    description      = null
+    prefix_list_ids  = null
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = null
+    security_groups  = null
+  }]
 }
 
 variable "sg_ingress_rules" {
   description = "Ingress rules for the VPC Endpoint SecurityGroup(s). Set to empty list to disable default rules."
-  type        = list
-  default     = null
+  type = list(object({
+    description      = string
+    prefix_list_ids  = list(string)
+    from_port        = number
+    to_port          = number
+    protocol         = string
+    cidr_blocks      = list(string)
+    ipv6_cidr_blocks = list(string)
+    security_groups  = list(string)
+  }))
+  default = [{
+    description      = null
+    prefix_list_ids  = null
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = null
+    security_groups  = null
+  }]
 }
 
 variable "subnet_ids" {
