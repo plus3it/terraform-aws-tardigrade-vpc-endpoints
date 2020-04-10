@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+### 4.0.1
+
+** Released**: 2020.04.10
+
+**Commit Delta**: [Change from 4.0.0 release](https://github.com/plus3it/terraform-aws-tardigrade-vpc-endpoints/compare/4.0.0...4.0.1)
+
+**Summary**:
+
+*   Uses `create_before_destroy` on SGs to better manage when the SG is recreated in a resource cycle
+
 ### 4.0.0
 
 ** Released**: 2020.04.09
