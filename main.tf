@@ -64,6 +64,10 @@ resource "aws_security_group" "this" {
   }
 
   tags = var.tags
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_vpc_endpoint" "interface_services" {
