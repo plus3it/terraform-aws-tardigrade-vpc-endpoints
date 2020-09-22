@@ -29,7 +29,6 @@ module "fully_qualified_name_endpoint" {
     aws = aws
   }
 
-  create_vpc_endpoints  = true
   vpc_endpoint_services = ["aws.sagemaker.us-east-1.notebook"]
   subnet_ids            = module.vpc.private_subnets
 }

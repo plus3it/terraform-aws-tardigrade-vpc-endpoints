@@ -29,7 +29,6 @@ module "config_endpoint" {
     aws = aws
   }
 
-  create_vpc_endpoints = true
   vpc_endpoint_services = [
     "config",
     "codepipeline",

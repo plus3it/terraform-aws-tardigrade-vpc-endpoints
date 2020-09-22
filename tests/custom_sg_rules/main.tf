@@ -47,7 +47,6 @@ module "custom_sg_rules" {
     aws = aws
   }
 
-  create_vpc_endpoints  = true
   vpc_endpoint_services = ["config"]
   subnet_ids            = module.vpc.private_subnets
   sg_ingress_rules      = local.sg_ingress_rules

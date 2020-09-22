@@ -27,6 +27,5 @@ module "config_endpoint" {
     aws = aws
   }
 
-  create_vpc_endpoints = true
-  subnet_ids           = module.vpc.private_subnets
+  subnet_ids = module.vpc.private_subnets
 }
