@@ -1,5 +1,4 @@
 data "aws_subnet" "selected" {
-  count = var.create_vpc_endpoints ? 1 : 0
 
   id = var.subnet_ids[0]
 }
@@ -7,7 +6,7 @@ data "aws_subnet" "selected" {
 data "aws_region" "selected" {}
 
 data "aws_vpc_endpoint_service" "this" {
-  for_each = toset(var.create_vpc_endpoints ? var.vpc_endpoint_services : [])
+  for_each = toset(var.vpc_endpoint_services)
 
   // If we get a "common name" (like "kms") we must generate a fully qualified name.
   // If the name contains the current region we trust the user to have provided a valid fully qualified name.
@@ -26,7 +25,7 @@ locals {
   interface_endpoints = toset([for e in data.aws_vpc_endpoint_service.this : e.service_name if e.service_type == "Interface"])
 
   # Only Interface Endpoints support SGs
-  security_groups = toset(var.create_vpc_endpoints ? var.create_sg_per_endpoint ? local.interface_endpoints : ["shared"] : [])
+  security_groups = toset(var.create_sg_per_endpoint ? local.interface_endpoints : ["shared"])
 }
 
 resource "aws_security_group" "this" {

@@ -4,12 +4,6 @@ variable "create_sg_per_endpoint" {
   default     = false
 }
 
-variable "create_vpc_endpoints" {
-  description = "Toggle to create VPC Endpoints."
-  type        = bool
-  default     = true
-}
-
 variable "sg_egress_rules" {
   description = "Egress rules for the VPC Endpoint SecurityGroup(s). Set to empty list to disable default rules."
   type = list(object({
