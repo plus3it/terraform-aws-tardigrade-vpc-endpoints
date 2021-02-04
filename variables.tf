@@ -76,3 +76,20 @@ variable "tags" {
   default     = {}
 }
 
+locals {
+  # if list contains s3
+
+  s3_service_found = contains(var.vpc_endpoint_services, "s3")
+
+  # slice out everything but the s3 bit
+
+  s3_service_index = local.s3_service_found ? index(var.vpc_endpoint_services, "s3") : -1
+
+  # assumes s3 index not at ends
+  pre_s3_part  = local.s3_service_found ? slice(var.vpc_endpoint_services, 0, local.s3_service_index) : []
+  post_s3_part = local.s3_service_found ? slice(var.vpc_endpoint_services, local.s3_service_index + 1, length(var.vpc_endpoint_services) - 1) : var.vpc_endpoint_services
+
+  # merge non-s3 pieces together
+
+  vpc_endpoint_services = concat(local.pre_s3_part, local.post_s3_part)
+}

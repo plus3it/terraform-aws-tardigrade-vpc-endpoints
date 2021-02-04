@@ -18,12 +18,34 @@ data "aws_vpc_endpoint_service" "this" {
   service_name = length(regexall(data.aws_region.selected.name, each.key)) == 1 ? each.key : "com.amazonaws.${data.aws_region.selected.name}.${each.key}"
 }
 
+data "aws_vpc_endpoint_service" "s3_gateway" {
+  service_name = "com.amazonaws.${data.aws_region.selected.name}.s3"
+
+  tags = {
+    "vpc-endpoint-type" : "gateway"
+  }
+}
+
+data "aws_vpc_endpoint_service" "s3_interface" {
+  service_name = "com.amazonaws.${data.aws_region.selected.name}.s3"
+
+  tags = {
+    "vpc-endpoint-type" : "interface"
+  }
+}
+
 locals {
   vpc_id = join("", data.aws_subnet.selected.*.vpc_id)
 
   # Split Endpoints by their type
-  gateway_endpoints   = toset([for e in data.aws_vpc_endpoint_service.this : e.service_name if e.service_type == "Gateway"])
-  interface_endpoints = toset([for e in data.aws_vpc_endpoint_service.this : e.service_name if e.service_type == "Interface"])
+  service_gateway_endpoints   = toset([for e in data.aws_vpc_endpoint_service.this : e.service_name if e.service_type == "Gateway"])
+  service_interface_endpoints = toset([for e in data.aws_vpc_endpoint_service.this : e.service_name if e.service_type == "Interface"])
+
+  s3_gateway_endpoint   = local.s3_service_found ? [data.aws_vpc_endpoint_service.s3_gateway] : []
+  s3_interface_endpoint = local.s3_service_found ? [data.aws_vpc_endpoint_service.s3_interface] : []
+
+  gateway_endpoints    = concat(local.service_gateway_endpoints, local.s3_gateway_endpoint)
+  interfrace_endpoints = concat(local.service_interface_endpoints, local.s3_gateway_endpoint)
 
   # Only Interface Endpoints support SGs
   security_groups = toset(var.create_vpc_endpoints ? var.create_sg_per_endpoint ? local.interface_endpoints : ["shared"] : [])
