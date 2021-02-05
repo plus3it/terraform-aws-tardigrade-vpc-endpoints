@@ -15,6 +15,5 @@
 .tardigrade-ci
 tardigrade-ci/
 
-# eclint
-.git/
-
+# terraform lock file
+.terraform.lock.hcl

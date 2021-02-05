@@ -10,10 +10,7 @@ resource "random_string" "this" {
 }
 
 module "vpc" {
-  source = "github.com/terraform-aws-modules/terraform-aws-vpc?ref=v2.15.0"
-  providers = {
-    aws = aws
-  }
+  source = "github.com/terraform-aws-modules/terraform-aws-vpc?ref=v2.70.0"
 
   name                 = "tardigrade-vpc-endpoints-${random_string.this.result}"
   cidr                 = "10.0.0.0/16"
@@ -25,15 +22,25 @@ module "vpc" {
 
 module "config_endpoint" {
   source = "../../"
-  providers = {
-    aws = aws
-  }
 
   vpc_endpoint_services = [
-    "config",
-    "codepipeline",
-    "monitoring",
-    "ec2",
+    {
+      name = "config"
+      type = "Interface"
+    },
+    {
+      name = "codepipeline"
+      type = "Interface"
+    },
+    {
+      name = "monitoring"
+      type = "Interface"
+    },
+    {
+      name = "ec2"
+      type = "Interface"
+    },
   ]
+
   subnet_ids = module.vpc.private_subnets
 }

@@ -10,10 +10,7 @@ resource "random_string" "this" {
 }
 
 module "vpc" {
-  source = "github.com/terraform-aws-modules/terraform-aws-vpc?ref=v2.15.0"
-  providers = {
-    aws = aws
-  }
+  source = "github.com/terraform-aws-modules/terraform-aws-vpc?ref=v2.70.0"
 
   name                 = "tardigrade-vpc-endpoints-${random_string.this.result}"
   cidr                 = "10.0.0.0/16"
@@ -25,11 +22,18 @@ module "vpc" {
 
 module "sg_per_endpoint" {
   source = "../../"
-  providers = {
-    aws = aws
-  }
 
-  vpc_endpoint_services  = ["s3", "sns"]
+  vpc_endpoint_services = [
+    {
+      name = "s3"
+      type = "Gateway"
+    },
+    {
+      name = "sns"
+      type = "Interface"
+    },
+  ]
+
   subnet_ids             = module.vpc.private_subnets
   create_sg_per_endpoint = true
 }
