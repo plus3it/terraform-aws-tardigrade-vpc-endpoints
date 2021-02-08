@@ -37,13 +37,14 @@ Then commit the updated files.
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12.9 |
+| terraform | >= 0.12.26 |
+| aws | >= 3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | n/a |
+| aws | >= 3.0 |
 
 ## Inputs
 
