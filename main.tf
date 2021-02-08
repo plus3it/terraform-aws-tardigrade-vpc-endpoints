@@ -30,6 +30,9 @@ locals {
       var.create_sg_per_endpoint ? local.interface_endpoints : ["shared"]
     ) : []
   )
+
+  # Regex of Interface services that do not support Private DNS
+  no_private_dns = "s3"
 }
 
 resource "aws_security_group" "this" {
@@ -85,7 +88,8 @@ resource "aws_vpc_endpoint" "interface_services" {
 
   security_group_ids = var.create_sg_per_endpoint ? [aws_security_group.this[each.key].id] : [aws_security_group.this["shared"].id]
 
-  private_dns_enabled = true # https://docs.aws.amazon.com/vpc/latest/userguide/vpce-interface.html#vpce-private-dns
+  # https://docs.aws.amazon.com/vpc/latest/userguide/vpce-interface.html#vpce-private-dns
+  private_dns_enabled = length(regexall(local.no_private_dns, each.key)) == 0 ? true : false
 }
 
 resource "aws_vpc_endpoint" "gateway_services" {
