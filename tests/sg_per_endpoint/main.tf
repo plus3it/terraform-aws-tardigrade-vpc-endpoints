@@ -29,6 +29,10 @@ module "sg_per_endpoint" {
       type = "Gateway"
     },
     {
+      name = "s3"
+      type = "Interface"
+    },
+    {
       name = "sns"
       type = "Interface"
     },

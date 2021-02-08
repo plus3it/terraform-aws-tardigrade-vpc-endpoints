@@ -40,6 +40,10 @@ module "config_endpoint" {
       name = "ec2"
       type = "Interface"
     },
+    {
+      name = "s3"
+      type = "Interface"
+    },
   ]
 
   subnet_ids = module.vpc.private_subnets
