@@ -53,15 +53,16 @@ variable "sg_ingress_rules" {
 }
 
 variable "subnet_ids" {
+  description = "Target Subnet IDs for \"Interface\" services. Also used to resolve the `vpc_id` for \"Gateway\" services"
   type        = list(string)
-  description = "Target Subnet ids."
-  default     = []
 }
 
 variable "vpc_endpoint_services" {
-  type        = list(string)
-  description = "List of AWS Endpoint service names that are used to create VPC Interface Endpoints. Both Gateway and Interface Endpoints are supported. See https://docs.aws.amazon.com/general/latest/gr/rande.html for full list."
-  default     = []
+  description = "List of AWS Endpoint service names and types. Both Gateway and Interface Endpoints are supported. See https://docs.aws.amazon.com/general/latest/gr/rande.html for full list."
+  type = list(object({
+    name = string
+    type = string
+  }))
 }
 
 variable "tags" {
@@ -69,4 +70,3 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
-
