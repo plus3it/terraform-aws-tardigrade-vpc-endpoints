@@ -12,3 +12,10 @@ jobs:
         uses: plus3it/dependabot-terraform-action@p3-implementation
         with:
           github_dependency_token: ${{ secrets.GH_READONLY_TOKEN }}
+          directory: |
+            /tests/config_endpoint
+            /tests/custom_sg_rules
+            /tests/fully_qualified_name_endpoint
+            /tests/gateway_type_endpoint
+            /tests/multiple_endpoints
+            /tests/sg_per_endpoint
