@@ -37,32 +37,40 @@ Then commit the updated files.
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.12.26 |
-| aws | >= 3.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.12.26 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | >= 3.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.0 |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_region.selected](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
+| [aws_subnet.selected](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
+| [aws_vpc_endpoint_service.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc_endpoint_service) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| subnet\_ids | Target Subnet IDs for "Interface" services. Also used to resolve the `vpc_id` for "Gateway" services | `list(string)` | n/a | yes |
-| vpc\_endpoint\_services | List of AWS Endpoint service names and types. Both Gateway and Interface Endpoints are supported. See https://docs.aws.amazon.com/general/latest/gr/rande.html for full list. | <pre>list(object({<br>    name = string<br>    type = string<br>  }))</pre> | n/a | yes |
-| create\_sg\_per\_endpoint | Toggle to create a SecurityGroup for each VPC Endpoint. Defaults to using just one for all Interface Endpoints. Note that Gateway Endpoints don't support SecurityGroups. | `bool` | `false` | no |
-| sg\_egress\_rules | Egress rules for the VPC Endpoint SecurityGroup(s). Set to empty list to disable default rules. | <pre>list(object({<br>    description      = string<br>    prefix_list_ids  = list(string)<br>    from_port        = number<br>    to_port          = number<br>    protocol         = string<br>    cidr_blocks      = list(string)<br>    ipv6_cidr_blocks = list(string)<br>    security_groups  = list(string)<br>  }))</pre> | <pre>[<br>  {<br>    "cidr_blocks": [<br>      "0.0.0.0/0"<br>    ],<br>    "description": null,<br>    "from_port": 0,<br>    "ipv6_cidr_blocks": null,<br>    "prefix_list_ids": null,<br>    "protocol": "-1",<br>    "security_groups": null,<br>    "to_port": 0<br>  }<br>]</pre> | no |
-| sg\_ingress\_rules | Ingress rules for the VPC Endpoint SecurityGroup(s). Set to empty list to disable default rules. | <pre>list(object({<br>    description      = string<br>    prefix_list_ids  = list(string)<br>    from_port        = number<br>    to_port          = number<br>    protocol         = string<br>    cidr_blocks      = list(string)<br>    ipv6_cidr_blocks = list(string)<br>    security_groups  = list(string)<br>  }))</pre> | <pre>[<br>  {<br>    "cidr_blocks": [<br>      "0.0.0.0/0"<br>    ],<br>    "description": null,<br>    "from_port": 0,<br>    "ipv6_cidr_blocks": null,<br>    "prefix_list_ids": null,<br>    "protocol": "-1",<br>    "security_groups": null,<br>    "to_port": 0<br>  }<br>]</pre> | no |
-| tags | A map of tags to add to the VPC Endpoint and to the SecurityGroup(s). | `map(string)` | `{}` | no |
+| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | Target Subnet IDs for "Interface" services. Also used to resolve the `vpc_id` for "Gateway" services | `list(string)` | n/a | yes |
+| <a name="input_vpc_endpoint_services"></a> [vpc\_endpoint\_services](#input\_vpc\_endpoint\_services) | List of AWS Endpoint service names and types. Both Gateway and Interface Endpoints are supported. See https://docs.aws.amazon.com/general/latest/gr/rande.html for full list. | <pre>list(object({<br>    name = string<br>    type = string<br>  }))</pre> | n/a | yes |
+| <a name="input_create_sg_per_endpoint"></a> [create\_sg\_per\_endpoint](#input\_create\_sg\_per\_endpoint) | Toggle to create a SecurityGroup for each VPC Endpoint. Defaults to using just one for all Interface Endpoints. Note that Gateway Endpoints don't support SecurityGroups. | `bool` | `false` | no |
+| <a name="input_sg_egress_rules"></a> [sg\_egress\_rules](#input\_sg\_egress\_rules) | Egress rules for the VPC Endpoint SecurityGroup(s). Set to empty list to disable default rules. | <pre>list(object({<br>    description      = string<br>    prefix_list_ids  = list(string)<br>    from_port        = number<br>    to_port          = number<br>    protocol         = string<br>    cidr_blocks      = list(string)<br>    ipv6_cidr_blocks = list(string)<br>    security_groups  = list(string)<br>  }))</pre> | <pre>[<br>  {<br>    "cidr_blocks": [<br>      "0.0.0.0/0"<br>    ],<br>    "description": null,<br>    "from_port": 0,<br>    "ipv6_cidr_blocks": null,<br>    "prefix_list_ids": null,<br>    "protocol": "-1",<br>    "security_groups": null,<br>    "to_port": 0<br>  }<br>]</pre> | no |
+| <a name="input_sg_ingress_rules"></a> [sg\_ingress\_rules](#input\_sg\_ingress\_rules) | Ingress rules for the VPC Endpoint SecurityGroup(s). Set to empty list to disable default rules. | <pre>list(object({<br>    description      = string<br>    prefix_list_ids  = list(string)<br>    from_port        = number<br>    to_port          = number<br>    protocol         = string<br>    cidr_blocks      = list(string)<br>    ipv6_cidr_blocks = list(string)<br>    security_groups  = list(string)<br>  }))</pre> | <pre>[<br>  {<br>    "cidr_blocks": [<br>      "0.0.0.0/0"<br>    ],<br>    "description": null,<br>    "from_port": 0,<br>    "ipv6_cidr_blocks": null,<br>    "prefix_list_ids": null,<br>    "protocol": "-1",<br>    "security_groups": null,<br>    "to_port": 0<br>  }<br>]</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to add to the VPC Endpoint and to the SecurityGroup(s). | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| vpc\_endpoint\_gateway\_services | n/a |
-| vpc\_endpoint\_interface\_services | n/a |
-| vpc\_endpoint\_sgs | n/a |
+| <a name="output_vpc_endpoint_gateway_services"></a> [vpc\_endpoint\_gateway\_services](#output\_vpc\_endpoint\_gateway\_services) | n/a |
+| <a name="output_vpc_endpoint_interface_services"></a> [vpc\_endpoint\_interface\_services](#output\_vpc\_endpoint\_interface\_services) | n/a |
+| <a name="output_vpc_endpoint_sgs"></a> [vpc\_endpoint\_sgs](#output\_vpc\_endpoint\_sgs) | n/a |
 
 <!-- END TFDOCS -->
