@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "us-east-1"
-}
-
 resource "random_string" "this" {
   length  = 6
   upper   = false
@@ -11,9 +7,6 @@ resource "random_string" "this" {
 
 module "vpc" {
   source = "github.com/terraform-aws-modules/terraform-aws-vpc?ref=v2.70.0"
-  providers = {
-    aws = aws
-  }
 
   name                 = "tardigrade-vpc-endpoints-${random_string.this.result}"
   cidr                 = "10.0.0.0/16"
@@ -25,9 +18,6 @@ module "vpc" {
 
 module "fully_qualified_name_endpoint" {
   source = "../../"
-  providers = {
-    aws = aws
-  }
 
   vpc_endpoint_services = [
     {
