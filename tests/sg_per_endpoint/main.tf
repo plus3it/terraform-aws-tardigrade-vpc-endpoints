@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "us-east-1"
-}
-
 resource "random_string" "this" {
   length  = 6
   upper   = false
@@ -10,7 +6,7 @@ resource "random_string" "this" {
 }
 
 module "vpc" {
-  source = "github.com/terraform-aws-modules/terraform-aws-vpc?ref=v2.70.0"
+  source = "github.com/terraform-aws-modules/terraform-aws-vpc?ref=v3.7.0"
 
   name                 = "tardigrade-vpc-endpoints-${random_string.this.result}"
   cidr                 = "10.0.0.0/16"
