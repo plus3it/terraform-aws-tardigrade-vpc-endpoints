@@ -12,7 +12,6 @@ Terraform `>= 0.12.9` is required due to a bug fix related to empty sets with `f
 version `0.12.9` -- see the [Changelog here](https://github.com/hashicorp/terraform/blob/v0.12/CHANGELOG.md#0129-september-17-2019).
 The original [bug was reported as issue #22281](https://github.com/hashicorp/terraform/issues/22281).
 
-
 ## Updating documentation
 Portions of this module's README.md, and those in its `tests` directory, are generated automatically. To update the sections inside `BEGIN TFDOCS` and `END TFDOCS` run the following:
 
@@ -31,6 +30,22 @@ make docs/generate
 ```
 
 Then commit the updated files.
+
+## Testing
+
+Manual testing:
+
+```
+# Replace "xxx" with an actual AWS profile, then execute the integration tests.
+export AWS_PROFILE=xxx 
+make terraform/pytest PYTEST_ARGS="-v --nomock"
+```
+
+For automated testing, PYTEST_ARGS is optional and no profile is needed:
+
+```
+make terraform/pytest PYTEST_ARGS="-v"
+```
 
 <!-- BEGIN TFDOCS -->
 ## Requirements
