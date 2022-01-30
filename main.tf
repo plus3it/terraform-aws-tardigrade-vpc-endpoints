@@ -17,7 +17,7 @@ data "aws_vpc_endpoint_service" "this" {
   service_type = title(each.value.type)
 }
 
-data aws_route_table "gateway_tables" {
+data "aws_route_table" "gateway_tables" {
   for_each = toset(var.subnet_ids)
 
   subnet_id = each.key
