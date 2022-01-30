@@ -17,6 +17,12 @@ data "aws_vpc_endpoint_service" "this" {
   service_type = title(each.value.type)
 }
 
+data aws_route_table "gateway_tables" {
+  for_each = toset(var.subnet_ids)
+
+  subnet_id = each.key
+}
+
 locals {
   vpc_id = data.aws_subnet.selected.vpc_id
 
@@ -83,8 +89,7 @@ resource "aws_vpc_endpoint" "interface_services" {
   tags              = var.tags
   vpc_endpoint_type = "Interface"
   vpc_id            = local.vpc_id
-
-  subnet_ids = var.subnet_ids
+  subnet_ids        = var.subnet_ids
 
   security_group_ids = var.create_sg_per_endpoint ? [aws_security_group.this[each.key].id] : [aws_security_group.this["shared"].id]
 
@@ -100,4 +105,5 @@ resource "aws_vpc_endpoint" "gateway_services" {
   tags              = var.tags
   vpc_endpoint_type = "Gateway"
   vpc_id            = local.vpc_id
+  route_table_ids   = [for t in data.aws_route_table.gateway_tables : t.route_table_id]
 }
