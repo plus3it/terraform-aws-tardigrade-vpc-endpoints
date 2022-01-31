@@ -17,18 +17,6 @@ data "aws_vpc_endpoint_service" "this" {
   service_type = title(each.value.type)
 }
 
-data "aws_route_tables" "gateway_tables" {
-  filter {
-    name   = "association.subnet-id"
-    values = var.subnet_ids
-  }
-
-  filter {
-    name   = "vpc-id"
-    values = [local.vpc_id]
-  }
-}
-
 locals {
   vpc_id = data.aws_subnet.selected.vpc_id
 
@@ -111,5 +99,5 @@ resource "aws_vpc_endpoint" "gateway_services" {
   tags              = var.tags
   vpc_endpoint_type = "Gateway"
   vpc_id            = local.vpc_id
-  route_table_ids   = [for t in data.aws_route_tables.gateway_tables.ids : t]
+  route_table_ids   = var.route_table_ids
 }

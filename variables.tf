@@ -53,8 +53,14 @@ variable "sg_ingress_rules" {
 }
 
 variable "subnet_ids" {
-  description = "Target Subnet IDs for \"Interface\" services. Also used to resolve the `vpc_id` and route_table_ids for \"Gateway\" services"
+  description = "Target Subnet IDs for \"Interface\" services. Also used to resolve the `vpc_id`."
   type        = list(string)
+}
+
+variable "route_table_ids" {
+  description = "Target Route Table IDs to register \"Gateway\" services with. \"Gateway\" Endpoints use Route Tables while \"Interface\" Endpoints use DNS."
+  type        = list(string)
+  default     = []
 }
 
 variable "vpc_endpoint_services" {

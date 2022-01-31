@@ -26,5 +26,6 @@ module "gateway_type_endpoint" {
     },
   ]
 
-  subnet_ids = module.vpc.private_subnets
+  subnet_ids      = module.vpc.private_subnets
+  route_table_ids = module.vpc.private_route_table_ids
 }
