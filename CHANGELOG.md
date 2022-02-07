@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+### 6.1.0
+
+** Released**: 2021.02.05
+
+**Commit Delta**: [Change from 6.0.0 release](https://github.com/plus3it/terraform-aws-tardigrade-vpc-endpoints/compare/6.0.0...6.1.0)
+
+**Summary**:
+
+*   Adds `route_table_ids` to create route entries for Gateway endpoint services
+
 ### 4.0.1
 
 ** Released**: 2020.04.10
