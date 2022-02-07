@@ -40,7 +40,12 @@ module "config_endpoint" {
       name = "s3"
       type = "Interface"
     },
+    {
+      name = "dynamodb"
+      type = "Gateway"
+    },
   ]
 
-  subnet_ids = module.vpc.private_subnets
+  subnet_ids      = module.vpc.private_subnets
+  route_table_ids = module.vpc.private_route_table_ids
 }
