@@ -1,42 +1,47 @@
 version: 2
 updates:
-- package-ecosystem: docker
-  directory: "/"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-- package-ecosystem: terraform
-  directory: "/"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-- package-ecosystem: terraform
-  directory: "/tests/custom_sg_rules"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-- package-ecosystem: terraform
-  directory: "/tests/fully_qualified_name_endpoint"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-- package-ecosystem: terraform
-  directory: "/tests/multiple_endpoints"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-- package-ecosystem: terraform
-  directory: "/tests/config_endpoint"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-- package-ecosystem: terraform
-  directory: "/tests/gateway_type_endpoint"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-- package-ecosystem: terraform
-  directory: "/tests/sg_per_endpoint"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+  - package-ecosystem: docker
+    directory: "/"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+  - package-ecosystem: terraform
+    directory: "/"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+  - package-ecosystem: terraform
+    directory: "/tests/custom_sg_rules"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+  - package-ecosystem: terraform
+    directory: "/tests/fully_qualified_name_endpoint"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+  - package-ecosystem: terraform
+    directory: "/tests/multiple_endpoints"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+  - package-ecosystem: terraform
+    directory: "/tests/config_endpoint"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+  - package-ecosystem: terraform
+    directory: "/tests/gateway_type_endpoint"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+  - package-ecosystem: terraform
+    directory: "/tests/sg_per_endpoint"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
