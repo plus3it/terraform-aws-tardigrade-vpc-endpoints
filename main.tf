@@ -13,7 +13,7 @@ data "aws_vpc_endpoint_service" "this" {
   // * Simple ones like "s3" or "sns".
   // * Complex common names like "ecr.dkr" and "ecr.api".
   // * Non-standard services like sagemeaker where the fully qualified name is like "aws.sagemaker.us-east-1.notebook".
-  service_name = length(regexall(data.aws_region.selected.name, each.value.name)) == 1 ? each.value.name : "com.amazonaws.${data.aws_region.selected.name}.${each.value.name}"
+  service_name = length(regexall(data.aws_region.selected.region, each.value.name)) == 1 ? each.value.name : "com.amazonaws.${data.aws_region.selected.region}.${each.value.name}"
   service_type = title(each.value.type)
 }
 
